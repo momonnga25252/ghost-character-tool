@@ -1,0 +1,637 @@
+/* 共通・変数 */
+:root {
+    --accent-color: #CC6666;
+    --background-color: rgb(30, 30, 40);
+    --text-color: white;
+    --error-color: #CC4444;
+    --input-background-color: #444;
+    --code-background-color: rgb(23, 23, 23);
+    --code-header-color: rgb(47, 47, 47);
+    --success-color: #10a37f;
+    --error-hover-color: #b35555;
+    --success-hover-color: #0f7c61;
+}
+
+/* 全体設定 */
+body {
+    font-family: sans-serif;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    max-width: 800px;
+}
+
+#characterTool>div {
+    margin-bottom: 2rem;
+}
+
+h1,
+h2 {
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* フォーム部品共通 */
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 1rem;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+/* ボタン */
+button {
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--error-hover-color);
+}
+
+/* フォームグループ（フローティングラベル） */
+.form-group {
+    position: relative;
+}
+
+.form-group input {
+    padding: 16px 8px 4px 8px;
+}
+
+.form-group label {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    color: #aaa;
+    background-color: var(--input-background-color);
+    padding: 0 4px;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.form-group input:focus+label,
+.form-group input:not(:placeholder-shown)+label {
+    top: -8px;
+    left: 8px;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.form-group input:not(:placeholder-shown) {
+    border: 1px solid var(--success-color);
+}
+
+/* select 状態変化 */
+.select-input {
+    appearance: none;
+}
+
+.select-input.selected {
+    border-color: var(--success-color);
+}
+
+/* 入力＋ボタン横並び */
+.input-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+.input-with-button .form-group {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.input-with-button button {
+    height: 100%;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ボタン系 */
+.action-buttons {
+    margin-top: 20px;
+}
+
+.action-buttons button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* アコーディオン */
+.accordion-header {
+    background-color: #444;
+    color: #fff;
+    padding: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.accordion-header::after {
+    content: "▼";
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.accordion.open .accordion-header::after {
+    transform: rotate(-180deg);
+}
+
+.accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.accordion.open .accordion-body {
+    max-height: 500px;
+    padding: 0.5rem;
+}
+
+/* 職業情報表示 */
+.job-fear,
+.job-description {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #222;
+    border: 1px dashed #888;
+    border-radius: 4px;
+}
+
+/* JSON出力表示制御 */
+.json-section .json-title,
+.json-section .json-output,
+.json-section .copy-btn,
+.json-section .output-header {
+    display: none;
+}
+
+.json-section.json-visible .json-title,
+.json-section.json-visible .json-output,
+.json-section.json-visible .copy-btn {
+    display: block;
+}
+
+.json-section.json-visible .output-header {
+    display: flex;
+}
+
+/* JSONシンタックスハイライト */
+.json-key {
+    color: rgb(175, 41, 97);
+}
+
+.json-string {
+    color: rgb(4, 141, 107);
+}
+
+.json-number,
+.json-boolean,
+.json-null {
+    color: rgb(32, 74, 100);
+}
+
+pre.json-output {
+    background-color: var(--code-background-color);
+    padding: 1em;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border: 1px solid var(--code-header-color);
+    border-radius: 0 0 4px 4px;
+    margin-top: 0;
+}
+
+/* JSON出力ヘッダー */
+.output-header {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--code-header-color);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px 4px 0 0;
+}
+
+/* コピーボタン */
+.copy-btn {
+    background-color: var(--success-color);
+    color: white;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.copy-btn:hover {
+    background-color: var(--success-hover-color);
+}
+
+/* トースト通知 */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--success-color);
+    color: var(--text-color);
+    padding: 12px 20px;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s, transform 0.3s;
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.error {
+    background-color: var(--error-color);
+}
+
+/* favicon */
+.favicon {
+    width: 20px;
+    height: 20px;
+}
+
+
+.tool-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto 1rem auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.tool-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    user-select: none;
+}
+
+.tool-header button {
+    padding: 8px 16px;
+    font-size: 1rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.tool-header button:hover {
+    background-color: var(--error-hover-color);
+}
+
+
+/*
+    replace tool
+*/
+
+.save-load-buttons {
+    position: fixed;
+    /* 画面に固定 */
+    top: 10px;
+    /* 上から10px */
+    left: 10px;
+    /* 左から10px */
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+}
+
+#replaceTool {
+    position: absolute;
+    left: 0;
+    max-width: none;
+    width: 100vw;
+    /* ビューポートいっぱいに広げる */
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.row-controls {
+    display: flex;
+    justify-content: flex-end;
+    /* 右寄せ */
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.replacement-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.replacement-row label {
+    width: 2rem;
+    text-align: right;
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.replacement-row input {
+    flex: 1;
+    padding: 0.4rem;
+    margin-right: 0.5rem;
+}
+
+.text-output {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.text-output mark {
+    background-color: yellow;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+/* GM用ツール画面（左右横並びの幅調整） */
+.replace-tool {
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    align-items: flex-start;
+    display: flex;
+    /* 横並びにする */
+}
+
+.replaceLeft {
+    flex: 0 0 60%;
+    /* 左側は幅60%固定 */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* スクロール可能 */
+}
+
+.replaceRowsContainer {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    grid-auto-rows: minmax(50px, auto);
+    gap: 12px;
+}
+
+.replaceRight {
+    flex: 1;
+    /* 右側は残りの幅を使う */
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.replaceLeft {
+    flex: 4;
+}
+
+.replaceRight {
+    flex: 6;
+}
+
+#originalText,
+#replacedText {
+    width: 100%;
+    height: 80vh;
+    resize: none;
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 14px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: scroll;
+}
+
+
+/* 左：単語入力エリア */
+.word-list-section {
+    flex: 1;
+    /* ← これを追加 */
+    display: flex;
+    flex-direction: column;
+}
+
+.word-list-section {
+    flex: 4;
+}
+
+.text-area-section {
+    flex: 6;
+}
+
+/* 左：単語リスト */
+/* .word-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+} */
+
+.word-list {
+  max-height: 80vh;  /* 必要に応じて調整 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+/* 右：文章欄 */
+.text-area-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.word-list-section {
+    flex: 4;
+}
+
+.text-area-section {
+    flex: 6;
+}
+
+.text-area-large {
+  width: 100%;
+  min-height: 200px;
+  padding: 12px 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #eee;
+  background-color: #222; /* ダーク背景 */
+  border: 1.5px solid #444;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7);
+  resize: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.text-area-large::placeholder {
+  color: #777;
+}
+
+.text-area-large:focus {
+  outline: none;
+  border-color: #6a9ef8; /* ブルー系アクセント */
+  box-shadow: 0 0 8px rgba(106, 158, 248, 0.7);
+  background-color: #1a1a1a; /* 少し明るめの背景 */
+  color: #fff;
+}
+
+/* トグルボタン（右寄せ） */
+.toggle-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+/* 非表示切り替え用 */
+.hidden {
+    display: none;
+}
+
+/* 強調表示用 */
+.replaced-html mark {
+    background-color: yellow;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+.replaced-html {
+    white-space: pre-wrap;
+}
+
+.word-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.row-number {
+    width: 1.5em;
+    text-align: right;
+    color: #ccc;
+}
+
+.word-actions {
+    margin-left: auto;
+}
+
+.add-row,
+.remove-row {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+.word-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* ===============================
+   📱 メディアクエリ：画面幅 600px 以下
+   =============================== */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .input-with-button {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-with-button button {
+        width: 100%;
+        margin-top: 8px;
+        height: auto;
+    }
+
+    .output-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .copy-btn {
+        align-self: flex-end;
+    }
+
+    h1,
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    label {
+        font-size: 0.95rem;
+    }
+
+    input,
+    select {
+        font-size: 1rem;
+    }
+
+    .toast {
+        bottom: 10px;
+        right: 10px;
+        width: calc(100% - 20px);
+        font-size: 0.9rem;
+    }
+
+    pre.json-output {
+        font-size: 0.85rem;
+    }
+}

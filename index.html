@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JSONデータ生成ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="tool-header">
+        <h1 id="toolTitle">怪談白物語キャラシツール</h1>
+        <button id="toggleToolBtn">⚙ GM用画面へ切替</button>
+    </div>
+
+    <!-- キャラ作成画面 -->
+    <div id="characterTool">
+        <!-- ここに既存のキャラクター作成フォーム内容を置く（省略） -->
+        <div class="form-group">
+            <input type="text" id="name" name="name" placeholder=" " required />
+            <label for="name">名前</label>
+        </div>
+
+        <select id="job" name="job" class="select-input">
+            <option value="" disabled selected>職業を選んでください</option>
+            <option value="脚本家">脚本家</option>
+            <option value="霊媒師">霊媒師</option>
+            <option value="編集者">編集者</option>
+            <option value="科学者">科学者</option>
+            <option value="呪術師">呪術師</option>
+            <option value="無職">無職</option>
+        </select>
+
+        <div class="accordion">
+            <div class="accordion-header">職業の詳細</div>
+            <div class="accordion-body">
+                <div class="job-fear" id="job-fear">
+                    恐怖耐久値:
+                </div>
+                <div class="job-description" id="job-description">
+                    職業の技能
+                </div>
+            </div>
+        </div>
+
+        <div class="input-with-button">
+            <div class="form-group">
+                <input type="number" id="judgementValue" min="1" max="6" placeholder=" " required />
+                <label for="judgementValue">判定値</label>
+            </div>
+            <button type="button" id="randomBtn">ランダム</button>
+        </div>
+
+        <div class="action-buttons">
+            <button id="generateBtn"><img src="https://ccfolia.com/favicon.ico" class="favicon"> CCFOLIA コマ出力</button>
+        </div>
+
+        <div class="json-section" id="jsonSection">
+            <h2 class="json-title">コマデータ</h2>
+            <div class="output-header">
+                <span class="output-label">json</span>
+                <button class="copy-btn" id="copyBtn">クリップボードにコピー</button>
+            </div>
+            <pre class="json-output"><code id="output"></code></pre>
+        </div>
+    </div>
+
+    <!-- GM用ツール画面 -->
+    <div id="replaceTool" class="replace-tool" style="display: none;">
+        <div class="save-load-buttons">
+            <input type="text" id="fileNameInput" placeholder="ファイル名を入力（拡張子不要）" value="" style="width: 250px;"/>
+            <button id="saveWordListToFile">💾 ファイル保存</button>
+            <button id="triggerLoadFile">📂 ファイル読込</button>
+            <input type="file" id="loadWordListFromFile" accept=".json" style="display:none;">
+        </div>
+
+
+        <div class="replaceRowsContainer">
+            <!-- 24個の置換行の要素がここに入る想定 -->
+            <div id="word-list-section" class="word-list-section">
+                <div class="word-controls">
+                    <button id="addWordRow">＋行を追加</button>
+                    <button id="removeWordRow">−行を削除</button>
+                </div>
+                <div id="wordList" class="word-list">
+                    <!-- JSで行を追加 -->
+                </div>
+            </div>
+            <!-- 右側：文章入力エリア -->
+            <div class="text-area-section">
+                <div class="toggle-container">
+                    <button id="updateReplaceBtn" style="display: none; margin-right: 8px;">置換更新</button>
+                    <button id="toggleViewBtn">置換後を表示</button>
+                </div>
+                <textarea id="originalText" class="text-area-large" placeholder="ここに文章を入力"></textarea>
+                <!-- <textarea id="replacedText" class="text-area-large hidden"></textarea> -->
+                <div id="replacedText" class="text-area-large hidden replaced-html" readonly></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
