@@ -1,4 +1,12 @@
-# Ghost Character Tool - 更新履歴
+# 怪談白物語ツール
+
+[怪談白物語ルールブック](https://booth.pm/ja/items/816008 "TRPGおまじな大饗宴")
+
+[怪談白物語ツールリンク](https://momonnga25252.github.io/ghost-character-tool "怪談白物語ツール")
+
+---
+
+# 怪談白物語ツール - 更新履歴
 
 ## v2.0.1
 
